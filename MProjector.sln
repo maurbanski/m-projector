@@ -2,6 +2,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Interface", "MProjector.Interface\MProjector.Interface.csproj", "{13F85A7D-C162-4117-9EB2-4F6E8FB76B80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Abstractions", "MProjector.Abstractions\MProjector.Abstractions.csproj", "{D97037FC-F70A-4195-8555-C7E531CBE066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Logic", "MProjector.Logic\MProjector.Logic.csproj", "{6E09717A-725B-4474-8A3C-FFAF91D890CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Graphics", "MProjector.Graphics\MProjector.Graphics.csproj", "{0DDF1633-7FB5-4C19-A27F-68DA758EE7ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Logic.Tests", "MProjector.Logic.Tests\MProjector.Logic.Tests.csproj", "{6BC8BF04-4FB9-4BC9-BD3A-96CA6192D1BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +20,21 @@ Global
 		{13F85A7D-C162-4117-9EB2-4F6E8FB76B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13F85A7D-C162-4117-9EB2-4F6E8FB76B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13F85A7D-C162-4117-9EB2-4F6E8FB76B80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D97037FC-F70A-4195-8555-C7E531CBE066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D97037FC-F70A-4195-8555-C7E531CBE066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D97037FC-F70A-4195-8555-C7E531CBE066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D97037FC-F70A-4195-8555-C7E531CBE066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E09717A-725B-4474-8A3C-FFAF91D890CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E09717A-725B-4474-8A3C-FFAF91D890CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E09717A-725B-4474-8A3C-FFAF91D890CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E09717A-725B-4474-8A3C-FFAF91D890CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DDF1633-7FB5-4C19-A27F-68DA758EE7ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DDF1633-7FB5-4C19-A27F-68DA758EE7ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DDF1633-7FB5-4C19-A27F-68DA758EE7ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DDF1633-7FB5-4C19-A27F-68DA758EE7ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BC8BF04-4FB9-4BC9-BD3A-96CA6192D1BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BC8BF04-4FB9-4BC9-BD3A-96CA6192D1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BC8BF04-4FB9-4BC9-BD3A-96CA6192D1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BC8BF04-4FB9-4BC9-BD3A-96CA6192D1BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

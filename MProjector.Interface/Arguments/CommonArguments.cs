@@ -1,6 +1,6 @@
 using System.CommandLine;
 
-namespace MProjector.Interface.Inputs;
+namespace MProjector.Interface.Arguments;
 
 public static class CommonArguments
 {

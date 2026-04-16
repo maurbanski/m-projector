@@ -1,23 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyName>mprojector</AssemblyName>
-        <Company />
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="System.CommandLine" Version="3.0.0-preview.2.26159.112" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MProjector.Abstractions\MProjector.Abstractions.csproj" />
       <ProjectReference Include="..\MProjector.Graphics\MProjector.Graphics.csproj" />
-      <ProjectReference Include="..\MProjector.Logic\MProjector.Logic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SkiaSharp" Version="3.119.3-preview.1.1" />
+      <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.3-preview.1.1" />
+    </ItemGroup>
 
 </Project>
