@@ -1,6 +1,7 @@
 using MProjector.Abstractions.Graphics;
 using MProjector.Abstractions.Projections;
-using MProjector.Logic.Points;
+using MProjector.Graphics;
+using MProjector.Logic.Coordinates;
 
 namespace MProjector.Logic.Projections;
 
@@ -18,14 +19,21 @@ public class LambertProjection : ProjectionBase, ILambertProjection
         
         var rX = Bitmap.Width / 6.28318530719;
         var rY = (double)(Bitmap.Height / 2);
+
+        var xBound = Bitmap.Width - 1;
+        var yBound = Bitmap.Height - 1;
         
         for (int i = 0; i < Bitmap.Width; i++)
         {
             for (int j = 0; j < Bitmap.Height; j++)
             {
-                var geodeticPoint = new GeodeticPoint(i, j, Bitmap.Width, Bitmap.Height);
-                var lambertCoords = FindLambertCoords(geodeticPoint, rX, rY);
-                var bitmapPoint = new BitmapPoint(lambertCoords, Bitmap.Width, Bitmap.Height);
+                var sourceBitmapPoint = new BitmapPoint(i, j);
+                var cartesianCoordinates = new CartesianCoordinates(sourceBitmapPoint, xBound, yBound);
+                var geodeticCoordinates = new GeodeticCoordinates(cartesianCoordinates, xBound, yBound);
+                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY);
+                Console.WriteLine(geodeticCoordinates.LambdaDeg + "|" + geodeticCoordinates.PhiDeg);
+                Console.WriteLine(lambertCoords.X + "|" + lambertCoords.Y);
+                var bitmapPoint = new BitmapPoint(lambertCoords, xBound, yBound);
                 Bitmap.SetPixel(bitmapPoint.X, bitmapPoint.Y, Bitmap.GetPixel(i, j));
             }
         }
@@ -36,11 +44,11 @@ public class LambertProjection : ProjectionBase, ILambertProjection
         return Bitmap.ToBytes();
     }
 
-    public CartesianPoint FindLambertCoords(GeodeticPoint geodeticPoint, double rX, double rY)
+    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY)
     {
-        var x = rX*Math.Cos(_phi0) * (geodeticPoint.LambdaRad - _lambda0);
-        var y = rY*Math.Sin(geodeticPoint.PhiRad)/Math.Cos(_phi0);
+        var x = rX*Math.Cos(_phi0) * (geodeticCoordinates.LambdaRad - _lambda0);
+        var y = rY*Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(_phi0);
 
-        return new CartesianPoint(x, y);
+        return new CartesianCoordinates(x, y);
     }
 }

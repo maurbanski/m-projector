@@ -2,6 +2,7 @@ using System.CommandLine;
 using System.Reflection.Metadata;
 using MProjector.Abstractions.Projections;
 using MProjector.Interface.Arguments;
+using MProjector.Interface.Options;
 
 namespace MProjector.Interface.Commands;
 
@@ -33,6 +34,7 @@ public class LambertCommand
     {
         var input = parseResult.GetValue<FileInfo>(CommonArguments.InputArgument.Name);
         var output = parseResult.GetValue<FileInfo>(CommonArguments.OutputArgument.Name);
+        var verbose = parseResult.GetValue<bool>(CommonOptions.VerboseOption.Name);
         
         var inputBytes = File.ReadAllBytes(input.FullName);
         byte[] outputBytes = _projection.FromEquirectangular(inputBytes);
