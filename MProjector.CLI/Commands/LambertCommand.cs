@@ -29,6 +29,12 @@ public class LambertCommand
     
     public void Run(CliContext context)
     {
+        if (RootCommand.LogFile != null)
+        {
+            NLog.GlobalDiagnosticsContext.Set("logToFile", true);
+            NLog.GlobalDiagnosticsContext.Set("logFile", RootCommand.LogFile);
+        }
+        
         _logger.LogInformation($"Reading file {Input.FullName}...");
         var inputBytes = File.ReadAllBytes(Input.FullName);
         
