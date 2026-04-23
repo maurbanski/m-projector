@@ -9,6 +9,8 @@ public interface IBitmap
     IPixel GetPixel(int x, int y);
     void SetPixel(int x, int y, IPixel pixel);
 
-    void LoadFromBytes(byte[] inputBytes);
-    byte[] ToBytes();
+    void InitialiseEmpty(int width, int height);
+    void FromFile(string inputPath);
+    
+    void Save(string outputPath);
 }

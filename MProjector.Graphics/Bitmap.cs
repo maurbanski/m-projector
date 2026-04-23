@@ -16,14 +16,6 @@ public class Bitmap : IBitmap
         _bitmap = new SKBitmap();
     }
 
-    public Bitmap(SKBitmap bitmap)
-    {
-        Width = bitmap.Width;
-        Height = bitmap.Height;
-
-        _bitmap = bitmap;
-    }
-
     public void Clear()
     {
         Height = 0;
@@ -42,16 +34,29 @@ public class Bitmap : IBitmap
         _bitmap.SetPixel(x, y, ((Pixel)pixel).ToSKColor());
     }
 
-    public void LoadFromBytes(byte[] inputBytes)
+    public void InitialiseEmpty(int width, int height)
     {
-        var bitmap = SKBitmap.FromImage(SKImage.FromEncodedData(inputBytes));
-        Height = bitmap.Height;
-        Width = bitmap.Width;
-        _bitmap = bitmap;
+        Width = width;
+        Height = height;
+
+        _bitmap = new SKBitmap(width, height);
     }
 
-    public byte[] ToBytes()
+    public void FromFile(string inputPath)
     {
-        return SKImage.FromBitmap(_bitmap).Encode(SKEncodedImageFormat.Png, 100).ToArray();
+        var image = SKImage.FromEncodedData(inputPath);
+        _bitmap = SKBitmap.FromImage(image);
+        Height = _bitmap.Height;
+        Width = _bitmap.Width;
+    }
+
+    public void Save(string outputPath)
+    {
+        using (var stream = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+        {
+            var image = SKImage.FromBitmap(_bitmap);
+            var encodedImage = image.Encode(SKEncodedImageFormat.Png, 100);
+            encodedImage.SaveTo(stream);
+        }
     }
 }

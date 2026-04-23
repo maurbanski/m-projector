@@ -11,19 +11,19 @@
             Y = y;
         }
 
-        public CartesianCoordinates(BitmapPoint bitmapPoint, double xBound, double yBound)
+        public CartesianCoordinates(BitmapPoint bitmapPoint, double width, double height)
         {
-            if (Math.Abs(bitmapPoint.X) > xBound) throw new ArgumentException("X-coord out of bounds");
-            if (Math.Abs(bitmapPoint.Y) > yBound) throw new ArgumentException("Y-coord out of bounds");
+            if (Math.Abs(bitmapPoint.X) > width) throw new ArgumentException("X-coord out of bounds");
+            if (Math.Abs(bitmapPoint.Y) > height) throw new ArgumentException("Y-coord out of bounds");
 
-            X = bitmapPoint.X - xBound / 2;
-            Y = yBound / 2 - bitmapPoint.Y;
+            X = bitmapPoint.X - width / 2;
+            Y = height / 2 - bitmapPoint.Y;
         }
 
-        public CartesianCoordinates(GeodeticCoordinates geodeticCoordinates, double xBound, double yBound)
+        public CartesianCoordinates(GeodeticCoordinates geodeticCoordinates, double width, double height)
         {
-            X = geodeticCoordinates.LambdaDeg / (2 * 180 / xBound);
-            Y = geodeticCoordinates.PhiDeg / (2 * 90 / yBound);
+            X = geodeticCoordinates.LambdaDeg / (2 * 180 / width);
+            Y = geodeticCoordinates.PhiDeg / (2 * 90 / height);
         }
     }
 }

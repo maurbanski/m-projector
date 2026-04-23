@@ -8,74 +8,68 @@ namespace MProjector.Logic.Projections;
 public class LambertProjection : ProjectionBase, ILambertProjection
 {
     private readonly ILogger<LambertProjection> _logger;
-    private double _lambda0 => 0;
-    private double _phi0 => 0;
-
-    public LambertProjection(IBitmap bitmap, ILogger<LambertProjection> logger) : base(bitmap)
+    
+    public LambertProjection(IBitmap inputBitmap, IBitmap outputBitmap, ILogger<LambertProjection> logger) : base(inputBitmap, outputBitmap)
     {
         _logger = logger;
     }
     
-    public byte[] FromEquirectangular(byte[] inputBytes, bool verbose)
+    public void ConvertFromEquirectangular(FileInfo input, FileInfo output, double lambda0 = 0, double phi0 = 0)
     {
-        Bitmap.Clear();
-        if (verbose) _logger.LogInformation("Loading bitmap from bytes");
-        Bitmap.LoadFromBytes(inputBytes);
-        
-        if (verbose) _logger.LogInformation($"Calculating rX, rY based on map dimensions ({Bitmap.Width}, {Bitmap.Height})");
-        var rX = Bitmap.Width / 6.28318530719;
-        var rY = (double)(Bitmap.Height / 2);
-        if (verbose) _logger.LogInformation($"Calculated rX = {rX}, rY = {rY}");
-        
-        if (verbose) _logger.LogInformation($"Setting x and y absolute boundaries for cartesian coordinates");
-        var xBound = Bitmap.Width - 1;
-        var yBound = Bitmap.Height - 1;
-        if (verbose) _logger.LogInformation($"Set xBound = {xBound}, yBound = {yBound}");
+        _logger.LogInformation("Loading input bitmap from file");
+        InputBitmap.FromFile(input.FullName);
 
-        if (verbose) _logger.LogInformation($"Iterating over bitmap");
-        for (int i = 0; i < Bitmap.Width; i++)
+        _logger.LogInformation("Initialising empty output bitmap");
+        OutputBitmap.InitialiseEmpty(InputBitmap.Width, InputBitmap.Height);
+        
+        _logger.LogInformation($"Calculating rX, rY based on map dimensions ({InputBitmap.Width}, {InputBitmap.Height})");
+        var rX = InputBitmap.Width / 6.28318530719;
+        var rY = (double)(InputBitmap.Height / 2);
+        _logger.LogInformation($"Calculated rX = {rX}, rY = {rY}");
+        
+        _logger.LogInformation($"Iterating over bitmap");
+        for (int i = 0; i < InputBitmap.Width; i++)
         {
-            for (int j = 0; j < Bitmap.Height; j++)
+            for (int j = 0; j < InputBitmap.Height; j++)
             {
-                if (verbose) _logger.LogInformation($"Point ({i}, {j})");
-
+                _logger.LogDebug($"Point ({i}, {j})");
                 var sourceBitmapPoint = new BitmapPoint(i, j);
                 
-                if (verbose) _logger.LogInformation($"Calculating cartesian coordinates");
-                var cartesianCoordinates = new CartesianCoordinates(sourceBitmapPoint, xBound, yBound);
-                if (verbose) _logger.LogInformation($"Calculated x = {cartesianCoordinates.X}, y = {cartesianCoordinates.Y}");
-
-                if (verbose) _logger.LogInformation($"Calculating geodetic coordinates");
-                var geodeticCoordinates = new GeodeticCoordinates(cartesianCoordinates, xBound, yBound);
-                if (verbose) _logger.LogInformation($"Calculated lambdaDeg = {geodeticCoordinates.LambdaDeg}, phiDeg = {geodeticCoordinates.PhiDeg}");
-
-                if (verbose) _logger.LogInformation($"Calculating lambert coordinates (cartesian)");
-                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY);
-                if (verbose) _logger.LogInformation($"Calculated x = {lambertCoords.X}, y = {lambertCoords.Y}");
-
-                if (verbose) _logger.LogInformation($"Converting to bitmap point");
-                var bitmapPoint = new BitmapPoint(lambertCoords, xBound, yBound);
-                if (verbose) _logger.LogInformation($"Setting converted bitmap point ({bitmapPoint.X}, {bitmapPoint.Y})");
-
-                Bitmap.SetPixel(bitmapPoint.X, bitmapPoint.Y, Bitmap.GetPixel(i, j));
+                _logger.LogDebug($"Calculating cartesian coordinates");
+                var cartesianCoordinates = new CartesianCoordinates(sourceBitmapPoint, InputBitmap.Width, InputBitmap.Height);
+                _logger.LogDebug($"Calculated x = {cartesianCoordinates.X}, y = {cartesianCoordinates.Y}");
+                
+                _logger.LogDebug($"Calculating geodetic coordinates");
+                var geodeticCoordinates = new GeodeticCoordinates(cartesianCoordinates, InputBitmap.Width, InputBitmap.Height);
+                _logger.LogDebug($"Calculated lambdaDeg = {geodeticCoordinates.LambdaDeg}, phiDeg = {geodeticCoordinates.PhiDeg}");
+                
+                _logger.LogDebug($"Calculating lambert coordinates (cartesian)");
+                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY, lambda0, phi0);
+                _logger.LogDebug($"Calculated x = {lambertCoords.X}, y = {lambertCoords.Y}");
+                
+                _logger.LogDebug($"Converting to bitmap point");
+                var bitmapPoint = new BitmapPoint(lambertCoords, InputBitmap.Width, InputBitmap.Height);
+                _logger.LogDebug($"Setting converted bitmap point ({bitmapPoint.X}, {bitmapPoint.Y})");
+                
+                OutputBitmap.SetPixel(bitmapPoint.X, bitmapPoint.Y, InputBitmap.GetPixel(i, j));
             }
         }
-
-        if (verbose) _logger.LogInformation($"Removing horizontal bars");
+        
+        _logger.LogInformation($"Removing horizontal bars");
         ClearHorizontalBars();
         
-        if (verbose) _logger.LogInformation($"Removing vertical bars");
+        _logger.LogInformation($"Removing vertical bars");
         ClearVerticalBars();
-
-        if (verbose) _logger.LogInformation($"Saving bitmap to bytes");
-        return Bitmap.ToBytes();
+        
+        _logger.LogInformation($"Saving output bitmap to file");
+        OutputBitmap.Save(output.FullName);
     }
-
-    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY)
+    
+    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0, double phi0)
     {
-        var x = rX*Math.Cos(_phi0) * (geodeticCoordinates.LambdaRad - _lambda0);
-        var y = rY*Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(_phi0);
-
+        var x = rX*Math.Cos(phi0) * (geodeticCoordinates.LambdaRad - lambda0);
+        var y = rY*Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0);
+        
         return new CartesianCoordinates(x, y);
     }
 }

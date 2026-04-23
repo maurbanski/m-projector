@@ -14,12 +14,12 @@ public record BitmapPoint
         Y = y;
     }
 
-    public BitmapPoint(CartesianCoordinates cartesianCoordinates, int xBound, int yBound)
+    public BitmapPoint(CartesianCoordinates cartesianCoordinates, int width, int height)
     {
-        if (Math.Abs(cartesianCoordinates.X) > xBound / 2) throw new ArgumentException($"X-coord out of bounds");
-        if (Math.Abs(cartesianCoordinates.Y) > yBound / 2) throw new ArgumentException($"Y-coord out of bounds");
+        if (Math.Abs(cartesianCoordinates.X) > width / 2) throw new ArgumentException($"X-coord out of bounds");
+        if (Math.Abs(cartesianCoordinates.Y) > height / 2) throw new ArgumentException($"Y-coord out of bounds");
         
-        X = Convert.ToInt32(cartesianCoordinates.X + xBound / 2);
-        Y = Convert.ToInt32(yBound / 2 - cartesianCoordinates.Y);
+        X = Math.Min(Convert.ToInt32(cartesianCoordinates.X + width / 2), width - 1);
+        Y = Math.Min(Convert.ToInt32(height / 2 - cartesianCoordinates.Y), height - 1);
     }
 }

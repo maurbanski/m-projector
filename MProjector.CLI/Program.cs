@@ -26,9 +26,10 @@ Cli.Ext.ConfigureServices(services =>
         builder.AddNLog();
     });
     
-    services.AddScoped<IBitmap, Bitmap>();
+    services.AddTransient<IBitmap, Bitmap>();
     services.AddScoped<ILambertProjection, LambertProjection>();
 });
 
 Cli.Run<RootCliCommand>();
+
 

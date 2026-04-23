@@ -1,6 +1,7 @@
 using DotMake.CommandLine;
 using Microsoft.Extensions.Logging;
 using MProjector.Abstractions.Projections;
+using NLog;
 
 namespace MProjector.CLI.Commands;
 
@@ -13,8 +14,14 @@ public class LambertCommand
     [CliArgument(Required = true, ValidationRules = CliValidationRules.ExistingFile)]
     public FileInfo Input { get; set; }
     
-    [CliArgument(Required = true, ValidationRules = CliValidationRules.ExistingFile)]
+    [CliArgument(Required = true, ValidationRules = CliValidationRules.LegalPath & CliValidationRules.LegalFileName)]
     public FileInfo Output { get; set; }
+
+    [CliOption(Required = false, Name = "lambda0", Description = "Central meridian (default = 0)")]
+    public double Lambda0 { get; set; }
+
+    [CliOption(Required = false, Name = "phi0", Description = "Standard parallel (default = 0 = equator)")]
+    public double Phi0 { get; set; }
     
     public RootCliCommand RootCommand { get; set; }
 
@@ -29,21 +36,27 @@ public class LambertCommand
     
     public void Run(CliContext context)
     {
-        if (RootCommand.LogFile != null)
+        RootCommand.SetLogging();
+
+        if (Lambda0 > 180 || Lambda0 < -180)
         {
-            NLog.GlobalDiagnosticsContext.Set("logToFile", true);
-            NLog.GlobalDiagnosticsContext.Set("logFile", RootCommand.LogFile);
+            _logger.LogError($"Supplied Lambda0 value must be between 180 and -180 degrees (provided: {Lambda0})");
+            return;
         }
-        
-        _logger.LogInformation($"Reading file {Input.FullName}...");
-        var inputBytes = File.ReadAllBytes(Input.FullName);
-        
-        _logger.LogInformation($"Converting map to Lambert projection...");
-        var outputBytes = _projection.FromEquirectangular(inputBytes, RootCommand.Verbose);
-        
-        _logger.LogInformation($"Saving map to {Output.FullName}...");
-        File.WriteAllBytes(Output.FullName, outputBytes);
-        
-        _logger.LogInformation($"File saved");
+
+        if (Phi0 > 90 || Phi0 < -90)
+        {
+            _logger.LogError($"Supplied Phi0 value must be between 90 and -90 degrees (provided: {Phi0})");
+            return;
+        }
+
+        try
+        {
+            _projection.ConvertFromEquirectangular(Input, Output, Lambda0, Phi0);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+        }
     }
 }
