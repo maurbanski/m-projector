@@ -70,8 +70,6 @@ public class LambertProjection : ProjectionBase, ILambertProjection
     
     public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0Rad, double phi0Rad)
     {
-        _logger.LogDebug($"{CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad)}");
-        
         var x = rX * Math.Cos(phi0Rad) * CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad);
         var y = rY * Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0Rad);
         
