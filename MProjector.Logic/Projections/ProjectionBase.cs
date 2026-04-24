@@ -1,5 +1,6 @@
 using MProjector.Abstractions.Graphics;
 using MProjector.Logic.ErrorHandling;
+using MProjector.Logic.Extensions;
 
 namespace MProjector.Logic.Projections;
 
@@ -63,4 +64,7 @@ public abstract class ProjectionBase
             }
         }
     }
+
+    public double CircularShiftLambda(double lambdaRad, double lambda0Rad) => 
+        MathExtensions.Mod(lambdaRad + Math.PI - lambda0Rad, Math.PI * 2) - Math.PI;
 }

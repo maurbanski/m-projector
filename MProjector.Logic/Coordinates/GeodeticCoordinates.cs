@@ -8,8 +8,8 @@
         public double LambdaDeg { get { return _lambda; } }
         public double PhiDeg { get { return _phi; } }
 
-        public double LambdaRad { get { return _lambda * (Math.PI / 180); } }
-        public double PhiRad { get { return _phi * (Math.PI / 180); } }
+        public double LambdaRad { get { return double.DegreesToRadians(_lambda); } }
+        public double PhiRad { get { return double.DegreesToRadians(_phi); } }
 
         public GeodeticCoordinates(double lambda, double phi)
         {

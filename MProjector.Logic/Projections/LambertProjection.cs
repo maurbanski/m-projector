@@ -27,6 +27,9 @@ public class LambertProjection : ProjectionBase, ILambertProjection
         var rY = (double)(InputBitmap.Height / 2);
         _logger.LogInformation($"Calculated rX = {rX}, rY = {rY}");
         
+        var lambda0Rad = double.DegreesToRadians(lambda0);
+        var phi0Rad = double.DegreesToRadians(phi0);
+        
         _logger.LogInformation($"Iterating over bitmap");
         for (int i = 0; i < InputBitmap.Width; i++)
         {
@@ -44,7 +47,7 @@ public class LambertProjection : ProjectionBase, ILambertProjection
                 _logger.LogDebug($"Calculated lambdaDeg = {geodeticCoordinates.LambdaDeg}, phiDeg = {geodeticCoordinates.PhiDeg}");
                 
                 _logger.LogDebug($"Calculating lambert coordinates (cartesian)");
-                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY, lambda0, phi0);
+                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY, lambda0Rad, phi0Rad);
                 _logger.LogDebug($"Calculated x = {lambertCoords.X}, y = {lambertCoords.Y}");
                 
                 _logger.LogDebug($"Converting to bitmap point");
@@ -65,10 +68,12 @@ public class LambertProjection : ProjectionBase, ILambertProjection
         OutputBitmap.Save(output.FullName);
     }
     
-    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0, double phi0)
+    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0Rad, double phi0Rad)
     {
-        var x = rX*Math.Cos(phi0) * (geodeticCoordinates.LambdaRad - lambda0);
-        var y = rY*Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0);
+        _logger.LogDebug($"{CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad)}");
+        
+        var x = rX * Math.Cos(phi0Rad) * CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad);
+        var y = rY * Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0Rad);
         
         return new CartesianCoordinates(x, y);
     }
