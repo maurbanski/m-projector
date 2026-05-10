@@ -22,7 +22,7 @@ public class BitmapPointTests
             },
             {
                 new CartesianCoordinates(512, 256),
-                new BitmapPoint(1024, 0)
+                new BitmapPoint(1023, 0)
             },
             {
                 new CartesianCoordinates(-512, 0),
@@ -34,19 +34,19 @@ public class BitmapPointTests
             },
             {
                 new CartesianCoordinates(512, 0),
-                new BitmapPoint(1024, 256)
+                new BitmapPoint(1023, 256)
             },
             {
                 new CartesianCoordinates(-512, -256),
-                new BitmapPoint(0, 512)
+                new BitmapPoint(0, 511)
             },
             {
                 new CartesianCoordinates(0, -256),
-                new BitmapPoint(512, 512)
+                new BitmapPoint(512, 511)
             },
             {
                 new CartesianCoordinates(512, -256),
-                new BitmapPoint(1024, 512)
+                new BitmapPoint(1023, 511)
             },
         };
 

@@ -27,7 +27,7 @@ Cli.Ext.ConfigureServices(services =>
     });
     
     services.AddTransient<IBitmap, Bitmap>();
-    services.AddScoped<ILambertProjection, LambertProjection>();
+    services.AddScoped<ICylindricalEqualAreaProjection, CylindricalEqualAreaProjection>();
 });
 
 Cli.Run<RootCliCommand>();

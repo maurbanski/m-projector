@@ -1,6 +1,6 @@
 using MProjector.Abstractions.Graphics;
 using MProjector.Logic.ErrorHandling;
-using MProjector.Logic.Extensions;
+using MProjector.Logic.V2.Extensions;
 
 namespace MProjector.Logic.Projections;
 

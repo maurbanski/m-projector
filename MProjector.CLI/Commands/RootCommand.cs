@@ -6,7 +6,12 @@ namespace MProjector.CLI.Commands;
 
 [CliCommand(
     Description = "CLI app for converting map projections",
-    Children = new []{ typeof(LambertCommand) }
+    Children = new []
+    {
+        typeof(LambertCommand),
+        typeof(BehrmannCommand),
+        typeof(GallOrthographicCommand)
+    }
 )]
 public class RootCliCommand()
 {

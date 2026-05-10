@@ -5,11 +5,11 @@ using MProjector.Logic.Coordinates;
 
 namespace MProjector.Logic.Projections;
 
-public class LambertProjection : ProjectionBase, ILambertProjection
+public class CylindricalEqualAreaProjection : ProjectionBase, ICylindricalEqualAreaProjection
 {
-    private readonly ILogger<LambertProjection> _logger;
+    private readonly ILogger<CylindricalEqualAreaProjection> _logger;
     
-    public LambertProjection(IBitmap inputBitmap, IBitmap outputBitmap, ILogger<LambertProjection> logger) : base(inputBitmap, outputBitmap)
+    public CylindricalEqualAreaProjection(IBitmap inputBitmap, IBitmap outputBitmap, ILogger<CylindricalEqualAreaProjection> logger) : base(inputBitmap, outputBitmap)
     {
         _logger = logger;
     }
@@ -46,12 +46,12 @@ public class LambertProjection : ProjectionBase, ILambertProjection
                 var geodeticCoordinates = new GeodeticCoordinates(cartesianCoordinates, InputBitmap.Width, InputBitmap.Height);
                 _logger.LogDebug($"Calculated lambdaDeg = {geodeticCoordinates.LambdaDeg}, phiDeg = {geodeticCoordinates.PhiDeg}");
                 
-                _logger.LogDebug($"Calculating lambert coordinates (cartesian)");
-                var lambertCoords = FindLambertCoords(geodeticCoordinates, rX, rY, lambda0Rad, phi0Rad);
-                _logger.LogDebug($"Calculated x = {lambertCoords.X}, y = {lambertCoords.Y}");
+                _logger.LogDebug($"Calculating cylindrical coordinates (cartesian)");
+                var cylindricalCoords = FindCylindricalCoords(geodeticCoordinates, rX, rY, lambda0Rad, phi0Rad);
+                _logger.LogDebug($"Calculated x = {cylindricalCoords.X}, y = {cylindricalCoords.Y}");
                 
                 _logger.LogDebug($"Converting to bitmap point");
-                var bitmapPoint = new BitmapPoint(lambertCoords, InputBitmap.Width, InputBitmap.Height);
+                var bitmapPoint = new BitmapPoint(cylindricalCoords, InputBitmap.Width, InputBitmap.Height);
                 _logger.LogDebug($"Setting converted bitmap point ({bitmapPoint.X}, {bitmapPoint.Y})");
                 
                 OutputBitmap.SetPixel(bitmapPoint.X, bitmapPoint.Y, InputBitmap.GetPixel(i, j));
@@ -68,8 +68,10 @@ public class LambertProjection : ProjectionBase, ILambertProjection
         OutputBitmap.Save(output.FullName);
     }
     
-    public CartesianCoordinates FindLambertCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0Rad, double phi0Rad)
+    public CartesianCoordinates FindCylindricalCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0Rad, double phi0Rad)
     {
+        _logger.LogDebug($"{phi0Rad}");
+        _logger.LogDebug($"{Math.Cos(phi0Rad)}");
         var x = rX * Math.Cos(phi0Rad) * CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad);
         var y = rY * Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0Rad);
         
