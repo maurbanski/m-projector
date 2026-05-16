@@ -1,4 +1,4 @@
-namespace MProjector.Logic.V2.Extensions;
+namespace MProjector.Logic.Extensions;
 
 public static class MathExtensions
 {

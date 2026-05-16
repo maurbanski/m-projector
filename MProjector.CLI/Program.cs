@@ -4,8 +4,10 @@ using DotMake.CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MProjector.Abstractions.Application;
 using MProjector.Abstractions.Graphics;
 using MProjector.Abstractions.Projections;
+using MProjector.Application.Services;
 using MProjector.CLI.Commands;
 using MProjector.Graphics;
 using MProjector.Logic.Projections;
@@ -26,8 +28,11 @@ Cli.Ext.ConfigureServices(services =>
         builder.AddNLog();
     });
     
-    services.AddTransient<IBitmap, Bitmap>();
+    
+    services.AddTransient<IGraphicalMap, GraphicalMap>();
+    services.AddTransient<IGraphicalMapFactory, GraphicalMapFactory>();
     services.AddScoped<ICylindricalEqualAreaProjection, CylindricalEqualAreaProjection>();
+    services.AddScoped<ICylindricalEqualAreaService, CylindricalEqualAreaService>();
 });
 
 Cli.Run<RootCliCommand>();

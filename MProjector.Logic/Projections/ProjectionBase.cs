@@ -1,68 +1,56 @@
-using MProjector.Abstractions.Graphics;
-using MProjector.Logic.ErrorHandling;
-using MProjector.Logic.V2.Extensions;
+using MProjector.Domain.Maps;
+using MProjector.Logic.Extensions;
 
 namespace MProjector.Logic.Projections;
 
 public abstract class ProjectionBase
 {
-    public IBitmap InputBitmap;
-    public IBitmap OutputBitmap;
-
-    public ProjectionBase(IBitmap inputBitmap, IBitmap outputBitmap)
+    public Map ClearHorizontalDistorion(Map map)
     {
-        InputBitmap = inputBitmap;
-        OutputBitmap = outputBitmap;
-    }
-    
-    public void ClearHorizontalBars()
-    {
-        if (OutputBitmap.Width == 0 || OutputBitmap.Height == 0) throw new DataNotLoadedException();
-        
-        for (int i = 1; i < OutputBitmap.Width - 1; i++)
+        for (int i = 1; i < map.Width - 1; i++)
         {
-            for (int j = 1; j < OutputBitmap.Height - 1; j++)
+            for (int j = 1; j < map.Height - 1; j++)
             {
-                var pixel = OutputBitmap.GetPixel(i, j);
-                if (pixel.IsBlack)
+                var point = map.GetPoint(i, j);
+                if (point.IsWhite)
                 {
-                    var above = OutputBitmap.GetPixel(i, j + 1);
-                    var below = OutputBitmap.GetPixel(i, j - 1);
-                    if (!above.IsBlack && !below.IsBlack)
+                    var above = map.GetPoint(i, j + 1);
+                    var below = map.GetPoint(i, j - 1);
+                    if (!above.IsWhite && !below.IsWhite)
                     {
-                        pixel.R = (above.R + below.R) / 2;
-                        pixel.G = (above.G + below.G) / 2;
-                        pixel.B = (above.B + below.B) / 2;
-                        OutputBitmap.SetPixel(i, j, pixel);
+                        point.R = (above.R + below.R) / 2;
+                        point.G = (above.G + below.G) / 2;
+                        point.B = (above.B + below.B) / 2;
                     }
                 }
             }
         }
+
+        return map;
     }
 
-    public void ClearVerticalBars()
+    public Map ClearVerticalDistortion(Map map)
     {
-        if (OutputBitmap.Width == 0 || OutputBitmap.Height == 0) throw new DataNotLoadedException();
-        
-        for (int i = 1; i < OutputBitmap.Width - 1; i++)
+        for (int i = 1; i < map.Width - 1; i++)
         {
-            for (int j = 1; j < OutputBitmap.Height - 1; j++)
+            for (int j = 1; j < map.Height - 1; j++)
             {
-                var pixel = OutputBitmap.GetPixel(i, j);
-                if (pixel.IsBlack)
+                var point = map.GetPoint(i, j);
+                if (point.IsWhite)
                 {
-                    var left = OutputBitmap.GetPixel(i - 1, j);
-                    var right = OutputBitmap.GetPixel(i + 1, j);
-                    if (!left.IsBlack && !right.IsBlack)
+                    var left = map.GetPoint(i - 1, j);
+                    var right = map.GetPoint(i + 1, j);
+                    if (!left.IsWhite && !right.IsWhite)
                     {
-                        pixel.R = (left.R + right.R) / 2;
-                        pixel.G = (left.G + right.G) / 2;
-                        pixel.B = (left.B + right.B) / 2;
-                        OutputBitmap.SetPixel(i, j, pixel);
+                        point.R = (left.R + right.R) / 2;
+                        point.G = (left.G + right.G) / 2;
+                        point.B = (left.B + right.B) / 2;
                     }
                 }
             }
         }
+
+        return map;
     }
 
     public double CircularShiftLambda(double lambdaRad, double lambda0Rad) => 

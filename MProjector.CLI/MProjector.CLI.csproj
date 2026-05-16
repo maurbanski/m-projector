@@ -20,6 +20,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MProjector.Abstractions\MProjector.Abstractions.csproj" />
+      <ProjectReference Include="..\MProjector.Application\MProjector.Application.csproj" />
+      <ProjectReference Include="..\MProjector.Graphics\MProjector.Graphics.csproj" />
+      <ProjectReference Include="..\MProjector.Logic\MProjector.Logic.csproj" />
       <ProjectReference Include="..\MProjector.Logic\MProjector.Logic.csproj" />
     </ItemGroup>
 

@@ -1,6 +1,6 @@
 using DotMake.CommandLine;
 using Microsoft.Extensions.Logging;
-using MProjector.Abstractions.Projections;
+using MProjector.Abstractions.Application;
 
 namespace MProjector.CLI.Commands;
 
@@ -20,12 +20,12 @@ public abstract class CylindricalEqualAreaCommandsBase
     public RootCliCommand RootCommand { get; set; }
 
     private readonly ILogger<CylindricalEqualAreaCommandsBase> _logger;
-    private readonly ICylindricalEqualAreaProjection _projection;
+    private readonly ICylindricalEqualAreaService _cylindricalEqualAreaService;
 
-    public CylindricalEqualAreaCommandsBase(ILogger<CylindricalEqualAreaCommandsBase> logger, ICylindricalEqualAreaProjection cylindricalEqualAreaProjection)
+    public CylindricalEqualAreaCommandsBase(ILogger<CylindricalEqualAreaCommandsBase> logger, ICylindricalEqualAreaService cylindricalEqualAreaService)
     {
         _logger = logger;
-        _projection = cylindricalEqualAreaProjection;
+        _cylindricalEqualAreaService = cylindricalEqualAreaService;
     }
 
     public void Run(CliContext context)
@@ -40,7 +40,7 @@ public abstract class CylindricalEqualAreaCommandsBase
 
         try
         {
-            _projection.ConvertFromEquirectangular(Input, Output, Lambda0, Phi0);
+            _cylindricalEqualAreaService.Convert(Input.FullName, Output.FullName, Lambda0, Phi0);
         }
         catch (Exception ex)
         {

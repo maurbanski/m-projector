@@ -1,6 +1,6 @@
 using DotMake.CommandLine;
 using Microsoft.Extensions.Logging;
-using MProjector.Abstractions.Projections;
+using MProjector.Abstractions.Application;
 
 namespace MProjector.CLI.Commands;
 
@@ -11,7 +11,7 @@ namespace MProjector.CLI.Commands;
 public class GallOrthographicCommand : CylindricalEqualAreaCommandsBase
 {
     public GallOrthographicCommand(ILogger<GallOrthographicCommand> logger,
-        ICylindricalEqualAreaProjection cylindricalEqualAreaProjection) : base(logger, cylindricalEqualAreaProjection) {}
+        ICylindricalEqualAreaService cylindricalEqualAreaService) : base(logger, cylindricalEqualAreaService) {}
 
     public override double Phi0 => 45;
 }

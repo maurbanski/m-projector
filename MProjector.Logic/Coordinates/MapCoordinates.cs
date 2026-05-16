@@ -1,4 +1,4 @@
-namespace MProjector.Logic.V2.Coordinates;
+namespace MProjector.Logic.Coordinates;
 
 public class MapCoordinates
 {

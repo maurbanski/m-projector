@@ -10,7 +10,7 @@ public class ProjectionBaseTests
     
     public ProjectionBaseTests()
     {
-        var bitmapMock = Substitute.For<IBitmap>();
+        var bitmapMock = Substitute.For<IGraphicalMap>();
         _sut = Substitute.For<ProjectionBase>(bitmapMock, bitmapMock);
     }
     

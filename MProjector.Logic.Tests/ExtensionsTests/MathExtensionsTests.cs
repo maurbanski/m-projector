@@ -1,4 +1,4 @@
-using MProjector.Logic.V2.Extensions;
+using MProjector.Logic.Extensions;
 
 namespace MProjector.Logic.Tests.ExtensionsTests;
 
