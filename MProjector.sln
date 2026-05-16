@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Domain", "MProje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Application", "MProjector.Application\MProjector.Application.csproj", "{4458DDF1-80AA-42DE-91AC-CF8E0D1DAA40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MProjector.Domain.Tests", "MProjector.Domain.Tests\MProjector.Domain.Tests.csproj", "{11FEFDAD-2B6D-4CB0-98CA-EB8CAD03464E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{4458DDF1-80AA-42DE-91AC-CF8E0D1DAA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4458DDF1-80AA-42DE-91AC-CF8E0D1DAA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4458DDF1-80AA-42DE-91AC-CF8E0D1DAA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11FEFDAD-2B6D-4CB0-98CA-EB8CAD03464E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FEFDAD-2B6D-4CB0-98CA-EB8CAD03464E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FEFDAD-2B6D-4CB0-98CA-EB8CAD03464E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FEFDAD-2B6D-4CB0-98CA-EB8CAD03464E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 namespace MProjector.Domain.Maps;
 
-public class MapPoint
+public record MapPoint
 {
     public MapPoint(int r, int g, int b)
     {

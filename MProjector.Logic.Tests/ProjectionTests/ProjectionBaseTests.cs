@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MProjector.Abstractions.Graphics;
 using MProjector.Logic.Projections;
 using NSubstitute;
@@ -10,8 +11,9 @@ public class ProjectionBaseTests
     
     public ProjectionBaseTests()
     {
+        var loggerMock = Substitute.For<ILogger<ProjectionBase>>();
         var bitmapMock = Substitute.For<IGraphicalMap>();
-        _sut = Substitute.For<ProjectionBase>(bitmapMock, bitmapMock);
+        _sut = Substitute.For<ProjectionBase>(loggerMock);
     }
     
     [Fact]
