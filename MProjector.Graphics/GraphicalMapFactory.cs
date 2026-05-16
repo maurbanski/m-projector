@@ -22,9 +22,6 @@ public class GraphicalMapFactory : IGraphicalMapFactory
             {
                 var point = map.GetPoint(i, j);
 
-                if (point == null) throw new Exception($"{i}, {j} wack");
-                
-                
                 SKColor color = new SKColor(
                     Convert.ToByte(point.R),
                     Convert.ToByte(point.G),
