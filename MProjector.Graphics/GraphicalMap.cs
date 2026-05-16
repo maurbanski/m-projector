@@ -21,9 +21,9 @@ public class GraphicalMap : IGraphicalMap
     public Map ToMap()
     {
         MapPoint[,] points = new MapPoint[Width, Height];
-        for (var i = 0; i < _bitmap.Width; i++)
+        for (var i = 0; i < Width; i++)
         {
-            for (var j = 0; j < _bitmap.Height; j++)
+            for (var j = 0; j < Height; j++)
             {
                 var color = _bitmap.GetPixel(i, j);
                 var point = new MapPoint(

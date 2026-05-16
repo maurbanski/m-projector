@@ -15,6 +15,13 @@ public class Map
         Height = height;
 
         _points = new MapPoint[width, height];
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                _points[i, j] = new MapPoint();
+            }
+        }
     }
 
     public Map(MapPoint[,] points)

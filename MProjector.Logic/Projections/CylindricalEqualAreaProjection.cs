@@ -7,12 +7,7 @@ namespace MProjector.Logic.Projections;
 
 public class CylindricalEqualAreaProjection : ProjectionBase, ICylindricalEqualAreaProjection
 {
-    private readonly ILogger<CylindricalEqualAreaProjection> _logger;
-    
-    public CylindricalEqualAreaProjection(ILogger<CylindricalEqualAreaProjection> logger)
-    {
-        _logger = logger;
-    }
+    public CylindricalEqualAreaProjection(ILogger<CylindricalEqualAreaProjection> logger) : base(logger) {}
 
     public Map Convert(Map inputMap, double lambda0 = 0, double phi0 = 0)
     {
@@ -55,7 +50,7 @@ public class CylindricalEqualAreaProjection : ProjectionBase, ICylindricalEqualA
         }
         
         _logger.LogInformation($"Removing horizontal bars");
-        outputMap = ClearHorizontalDistorion(outputMap);
+        outputMap = ClearHorizontalDistortion(outputMap);
         
         _logger.LogInformation($"Removing vertical bars");
         outputMap = ClearVerticalDistortion(outputMap);
@@ -65,8 +60,6 @@ public class CylindricalEqualAreaProjection : ProjectionBase, ICylindricalEqualA
     
     public CartesianCoordinates FindCylindricalCoords(GeodeticCoordinates geodeticCoordinates, double rX, double rY, double lambda0Rad, double phi0Rad)
     {
-        _logger.LogDebug($"{phi0Rad}");
-        _logger.LogDebug($"{Math.Cos(phi0Rad)}");
         var x = rX * Math.Cos(phi0Rad) * CircularShiftLambda(geodeticCoordinates.LambdaRad, lambda0Rad);
         var y = rY * Math.Sin(geodeticCoordinates.PhiRad)/Math.Cos(phi0Rad);
         

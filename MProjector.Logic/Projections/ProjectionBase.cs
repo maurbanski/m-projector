@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MProjector.Domain.Maps;
 using MProjector.Logic.Extensions;
 
@@ -5,17 +6,26 @@ namespace MProjector.Logic.Projections;
 
 public abstract class ProjectionBase
 {
-    public Map ClearHorizontalDistorion(Map map)
+    public readonly ILogger<ProjectionBase> _logger;
+    
+    public ProjectionBase(ILogger<ProjectionBase> logger)
     {
-        for (int i = 1; i < map.Width - 1; i++)
+        _logger = logger;
+    }
+    
+    public Map ClearHorizontalDistortion(Map map)
+    {
+        for (int i = 1; i < map.Width; i++)
         {
-            for (int j = 1; j < map.Height - 1; j++)
+            for (int j = 1; j < map.Height; j++)
             {
                 var point = map.GetPoint(i, j);
+                
                 if (point.IsWhite)
                 {
                     var above = map.GetPoint(i, j + 1);
                     var below = map.GetPoint(i, j - 1);
+
                     if (!above.IsWhite && !below.IsWhite)
                     {
                         point.R = (above.R + below.R) / 2;
@@ -31,9 +41,9 @@ public abstract class ProjectionBase
 
     public Map ClearVerticalDistortion(Map map)
     {
-        for (int i = 1; i < map.Width - 1; i++)
+        for (int i = 1; i < map.Width; i++)
         {
-            for (int j = 1; j < map.Height - 1; j++)
+            for (int j = 1; j < map.Height; j++)
             {
                 var point = map.GetPoint(i, j);
                 if (point.IsWhite)
