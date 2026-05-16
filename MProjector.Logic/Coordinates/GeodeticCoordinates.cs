@@ -1,6 +1,6 @@
 namespace MProjector.Logic.Coordinates;
 
-public class GeodeticCoordinates
+public record GeodeticCoordinates
 {
     private double _lambda;
     private double _phi;

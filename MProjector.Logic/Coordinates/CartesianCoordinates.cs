@@ -1,6 +1,6 @@
 namespace MProjector.Logic.Coordinates;
 
-public class CartesianCoordinates
+public record CartesianCoordinates
 {
     public double X { get; set; }
     public double Y { get; set; }

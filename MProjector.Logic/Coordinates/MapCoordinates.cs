@@ -1,6 +1,6 @@
 namespace MProjector.Logic.Coordinates;
 
-public class MapCoordinates
+public record MapCoordinates
 {
     public int X { get; set; }
     public int Y { get; set; }

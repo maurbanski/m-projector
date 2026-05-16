@@ -74,47 +74,47 @@ public class CartesianCoordinatesTests
     }
 
     [Fact]
-    public void Constructor_GivenBitmapCoordinates_ReturnsCorrectCoordinates()
+    public void Constructor_GivenMapCoordinates_ReturnsCorrectCoordinates()
     {
         var xBound = 1024;
         var yBound = 512;
         
-        Dictionary<BitmapPoint, CartesianCoordinates> pairs = new Dictionary<BitmapPoint, CartesianCoordinates>
+        Dictionary<MapCoordinates, CartesianCoordinates> pairs = new Dictionary<MapCoordinates, CartesianCoordinates>
         {
             {
-                new BitmapPoint(0, 0),
+                new MapCoordinates(0, 0),
                 new CartesianCoordinates(-512, 256)
             },
             {
-                new BitmapPoint(512, 0),
+                new MapCoordinates(512, 0),
                 new CartesianCoordinates(0, 256)
             },
             {
-                new BitmapPoint(1024, 0),
+                new MapCoordinates(1024, 0),
                 new CartesianCoordinates(512, 256)
             },
             {
-                new BitmapPoint(0, 256),
+                new MapCoordinates(0, 256),
                 new CartesianCoordinates(-512, 0)
             },
             {
-                new BitmapPoint(512, 256),
+                new MapCoordinates(512, 256),
                 new CartesianCoordinates(0, 0)
             },
             {
-                new BitmapPoint(1024, 256),
+                new MapCoordinates(1024, 256),
                 new CartesianCoordinates(512, 0)
             },
             {
-                new BitmapPoint(0, 512),
+                new MapCoordinates(0, 512),
                 new CartesianCoordinates(-512, -256)
             },
             {
-                new BitmapPoint(512, 512),
+                new MapCoordinates(512, 512),
                 new CartesianCoordinates(0, -256)
             },
             {
-                new BitmapPoint(1024, 512),
+                new MapCoordinates(1024, 512),
                 new CartesianCoordinates(512, -256)
             },
         };
@@ -127,20 +127,20 @@ public class CartesianCoordinatesTests
     }
 
     [Fact]
-    public void Constructor_GivenInvalidBitmapCoordinates_ThrowsException()
+    public void Constructor_GivenInvalidMapCoordinates_ThrowsException()
     {
-        var bitmapWidth = 1024;
-        var bitmapHeight = 512;
+        var mapWidth = 1024;
+        var mapHeight = 512;
 
-        var points = new List<BitmapPoint>
+        var points = new List<MapCoordinates>
         {
-            new BitmapPoint(1025, 0),
-            new BitmapPoint(0, 513)
+            new MapCoordinates(1025, 0),
+            new MapCoordinates(0, 513)
         };
         
         foreach (var point in points)
         {
-            Action act = () => new CartesianCoordinates(point, bitmapWidth, bitmapHeight);
+            Action act = () => new CartesianCoordinates(point, mapWidth, mapHeight);
             Assert.Throws<ArgumentException>(act);
         }
     }
